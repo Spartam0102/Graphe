@@ -11,7 +11,7 @@ import com.google.gson.Gson;
 public class Main {
     public static String FICHIER_SOURCE = "./data/data_100.txt";
 
-    public static Graph<String, DefaultEdge> importer() throws IOException {
+    public static Graph<String, DefaultEdge> importer() throws Exception {
         Gson gson = new Gson();
         Graph<String, DefaultEdge> g = new SimpleGraph<>(DefaultEdge.class);
 
@@ -22,15 +22,19 @@ public class Main {
 
         while (ligne != null) {
             GrapheJson donnees = gson.fromJson(ligne, GrapheJson.class);
-            
+            for (String acteur : donnees.cast){
+                g.addVertex(acteur);
+                for (String acteur2 : donnees.cast) {
+                    g.addEdge(acteur, acteur2);
+                }
+            }
             ligne = b.readLine();
         }
-
         f.close();
         return g;
     }
 
-    public static void main(String args[]) throws IOException {
+    public static void main(String args[]) throws Exception {
         Graph<String, DefaultEdge> g = importer();
         
     }
