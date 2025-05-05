@@ -24,8 +24,11 @@ public class Main {
             GrapheJson donnees = gson.fromJson(ligne, GrapheJson.class);
             for (String acteur : donnees.cast){
                 g.addVertex(acteur);
+            }
+            for (String acteur : donnees.cast) {
                 for (String acteur2 : donnees.cast) {
-                    g.addEdge(acteur, acteur2);
+                    if (!(acteur.equals(acteur2)))
+                        g.addEdge(acteur, acteur2);
                 }
             }
             ligne = b.readLine();
