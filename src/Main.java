@@ -1,13 +1,20 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+
+import java.util.Map;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+
 import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.SimpleGraph;
+import org.jgrapht.nio.AttributeType;
+import org.jgrapht.nio.DefaultAttribute;
+import org.jgrapht.nio.dot.DOTExporter;
 
 import com.google.gson.Gson;
 
@@ -41,6 +48,12 @@ public class Main {
     }
 
 
+    public static void exporter(Graph<String, DefaultEdge> graph, String fichier) throws IOException {
+        DOTExporter<String, DefaultEdge> exporter = new DOTExporter<String, DefaultEdge>();
+		exporter.setVertexAttributeProvider((x) -> Map.of("label", new DefaultAttribute<>(x, AttributeType.STRING)));
+		exporter.exportGraph(graph, new FileWriter(fichier));
+
+
     public static Set<String> collaborateursProches(Map<String, Set<String>> G, String u, int k) {
         if (!G.containsKey(u)) {
             System.out.println(u + " est un illustre inconnu");
@@ -67,10 +80,12 @@ public class Main {
         }
 
         return collaborateurs;
+
     }
 
     public static void main(String args[]) throws Exception {
         Graph<String, DefaultEdge> g = importer();
+       
         
     }
 }

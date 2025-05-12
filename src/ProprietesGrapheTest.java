@@ -22,7 +22,7 @@ public class ProprietesGrapheTest {
         graph.addEdge("c", "d");
         graph.addEdge("d", "e");
 
-        assertEquals("{a, b, c, d, e}, {a--b, a--c, b--c, c--d, d--e}", ProprietesGraphe.getString(graph));
+        assertEquals("{a, b, c, d, e}, {a--b, a--c, b--c, c--d, d--e}", Main.getString(graph));
     }
 
     @Test
