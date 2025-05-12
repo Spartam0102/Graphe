@@ -1,6 +1,9 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultEdge;
@@ -35,6 +38,35 @@ public class Main {
         }
         f.close();
         return g;
+    }
+
+
+    public static Set<String> collaborateursProches(Map<String, Set<String>> G, String u, int k) {
+        if (!G.containsKey(u)) {
+            System.out.println(u + " est un illustre inconnu");
+            return null;
+        }
+
+        Set<String> collaborateurs = new HashSet<>();
+        collaborateurs.add(u);
+
+        for (int i = 1; i <= k; i++) {
+            Set<String> collaborateursDirects = new HashSet<>();
+
+            for (String c : collaborateurs) {
+                Set<String> voisins = G.getOrDefault(c, new HashSet<>());
+
+                for (String v : voisins) {
+                    if (!collaborateurs.contains(v)) {
+                        collaborateursDirects.add(v);
+                    }
+                }
+            }
+
+            collaborateurs.addAll(collaborateursDirects);
+        }
+
+        return collaborateurs;
     }
 
     public static void main(String args[]) throws Exception {
