@@ -54,7 +54,27 @@ public class Main {
 		exporter.exportGraph(G, new FileWriter("graph.dot"));
     }
 
-    // 3.3 Collaborateurs en communs  
+    // 3.2 Collaborateurs en communs  
+    
+    public static Set<String> collaborateursCommuns(Graph<String, DefaultEdge> graph, String acteur1, String acteur2) {
+    if (!graph.containsVertex(acteur1) || !graph.containsVertex(acteur2)) {
+        System.out.println("Un des deux acteurs est un illustre inconnu");
+        return Set.of(); 
+    }
+
+    Set<String> voisins1 = Graphs.neighborSetOf(graph, acteur1);
+    Set<String> voisins2 = Graphs.neighborSetOf(graph, acteur2);
+
+    
+    voisins1.retainAll(voisins2);
+
+    return voisins1;
+}
+
+    
+    
+    // 3.3 Collaborateurs proches  
+
     public static Set<String> collaborateursProches(Map<String, Set<String>> G, String u, int k) {
         if (!G.containsKey(u)) {
             System.out.println(u + " est un illustre inconnu");
