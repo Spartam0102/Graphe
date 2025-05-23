@@ -1,19 +1,25 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
 import org.jgrapht.Graph;
+import org.jgrapht.Graphs;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.SimpleGraph;
+import org.jgrapht.nio.AttributeType;
+import org.jgrapht.nio.DefaultAttribute;
+import org.jgrapht.nio.dot.DOTExporter;
 
 import com.google.gson.Gson;
 
 public class Main {
     public static String FICHIER_SOURCE = "./data/data_100.txt";
 
+    // 3.1 Echauffement 
     public static Graph<String, DefaultEdge> importer() throws Exception {
         Gson gson = new Gson();
         Graph<String, DefaultEdge> g = new SimpleGraph<>(DefaultEdge.class);
@@ -39,8 +45,16 @@ public class Main {
         f.close();
         return g;
     }
+    
+    
+    // Exporter  
+    public static void exporter(Graph<String, DefaultEdge> G)throws IOException{
+        DOTExporter<String, DefaultEdge> exporter = new DOTExporter<String, DefaultEdge>();
+		exporter.setVertexAttributeProvider((x) -> Map.of("label", new DefaultAttribute<>(x, AttributeType.STRING)));
+		exporter.exportGraph(G, new FileWriter("graph.dot"));
+    }
 
-
+    // 3.3 Collaborateurs en communs  
     public static Set<String> collaborateursProches(Map<String, Set<String>> G, String u, int k) {
         if (!G.containsKey(u)) {
             System.out.println(u + " est un illustre inconnu");
@@ -68,6 +82,104 @@ public class Main {
 
         return collaborateurs;
     }
+
+    // 3.4 Qui est au centre d'Hollywood ? 
+    
+    public static int chercherPlusDistanceK(Graph<String, DefaultEdge> graph, String u) {
+    boolean finir=true;
+    if (!graph.containsVertex(u)) {
+        System.out.println(u + " est un illustre inconnu");
+        return -1;
+    } else {
+        int maxDistance = 0;
+        Set<String> visites = new HashSet<>();
+        Set<String> niveauActuel = new HashSet<>();
+        niveauActuel.add(u);
+        visites.add(u);
+
+        while (!niveauActuel.isEmpty() && finir) {
+            Set<String> niveauSuivant = new HashSet<>();
+            
+            for (String sommet : niveauActuel) {
+                Set<String> voisins = Graphs.neighborSetOf(graph, sommet);
+                
+                for (String voisin : voisins) {
+                    if (!visites.contains(voisin)) {
+                        niveauSuivant.add(voisin);
+                        visites.add(voisin);
+                    }
+                }
+            }
+
+            if (!niveauSuivant.isEmpty()) {
+                maxDistance++;
+                niveauActuel = niveauSuivant;
+            } else {
+                finir=false; 
+            }
+        }
+
+        return maxDistance;
+    }
+
+    //Paul je comprends pas ???? 
+
+    // 3.3
+
+    // public static Set<String> distanceK(Graph<String, DefaultEdge> graph, String u, int k) {
+    //     Set<String> collaborateurs = new HashSet<>();
+
+    //     if (!graph.containsVertex(u)) {
+    //         System.out.println(u + " est un illustre inconnu");
+    //         return null;
+    //     }
+
+    //     collaborateurs.add(u);
+
+    //     for (int i = 1; i <= k; i++) {
+    //         Set<String> collaborateurs_directs = new HashSet<>();
+    //         for (String c : collaborateurs) {
+    //             Set<String> voisins = Graphs.neighborSetOf(graph, c);
+    //             for (String v : voisins) {
+    //                 if (!collaborateurs.contains(v)) {
+    //                     collaborateurs_directs.add(v);
+    //                 }
+    //             }
+    //         }
+    //         collaborateurs.addAll(collaborateurs_directs);
+    //     }
+
+    //     return collaborateurs;
+    // }
+
+    // 3.3 modification
+    // public static int chercherDistanceK(Graph<String, DefaultEdge> graph, String u, String v) {
+
+    //     if (!graph.containsVertex(u) || !graph.containsVertex(v)) {
+    //         System.out.println(u + " est un illustre inconnu");
+    //         return -1;
+    //     }
+    //     if (u.equals(v)) {
+    //         return 0;
+    //     }
+    //     int distance=1;
+    //     Set<String> passer = new HashSet<>();
+    //     Set<String> tout=new HashSet<>();
+    //     tout=graph.vertexSet();
+    //     passer.add(u);
+    //     while (passer.size()<tout.size() && !passer.contains(v)) {
+    //         passer=distanceK(graph, u, distance);
+    //         distance++;
+
+
+            
+    //     }
+    //     return distance-1;
+
+
+
+    // }
+}
 
     public static void main(String args[]) throws Exception {
         Graph<String, DefaultEdge> g = importer();
