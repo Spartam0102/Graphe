@@ -2,7 +2,10 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -139,8 +142,52 @@ public class Main {
             }
         }
 
-        return maxDistance;
+        return maxDistance;}
     }
+
+    // 3.5 Une petite famille
+    
+    public static int distanceMax(Graph<String, DefaultEdge> graph) {
+    int distanceM = 0;
+
+    for (String acteur : graph.vertexSet()) {
+        Set<String> visites = new HashSet<>();
+        List<String> sommetsAVisiter = new ArrayList<>();
+        Map<String, Integer> distance = new HashMap<>();
+        sommetsAVisiter.add(acteur);
+        visites.add(acteur);
+        distance.put(acteur, 0);
+        int poseActu = 0;
+
+        while (poseActu < sommetsAVisiter.size()) {
+            String courant = sommetsAVisiter.get(poseActu);
+            poseActu++;
+            int distCourante = distance.get(courant);
+
+            for (String voisin : Graphs.neighborListOf(graph, courant)) {
+                if (!visites.contains(voisin)) {
+                    visites.add(voisin);
+                    sommetsAVisiter.add(voisin);
+                    distance.put(voisin, distCourante + 1);
+
+                    if (distCourante + 1 > distanceM) {
+                        distanceM = distCourante + 1;
+                    }
+                }
+            }
+        }
+    }
+
+    return distanceM;
+    }
+
+
+
+            
+        
+    
+        
+    
 
     //Paul je comprends pas ???? 
 
@@ -191,7 +238,6 @@ public class Main {
     //         passer=distanceK(graph, u, distance);
     //         distance++;
 
-
             
     //     }
     //     return distance-1;
@@ -199,10 +245,11 @@ public class Main {
 
 
     // }
-}
+
 
     public static void main(String args[]) throws Exception {
         Graph<String, DefaultEdge> g = importer();
         
     }
 }
+    
