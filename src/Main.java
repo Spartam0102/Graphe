@@ -60,19 +60,20 @@ public class Main {
     // 3.2 Collaborateurs en communs  
     
     public static Set<String> collaborateursCommuns(Graph<String, DefaultEdge> graph, String acteur1, String acteur2) {
-    if (!graph.containsVertex(acteur1) || !graph.containsVertex(acteur2)) {
-        System.out.println("Un des deux acteurs est un illustre inconnu");
-        return Set.of(); 
-    }
-
-    Set<String> voisins1 = Graphs.neighborSetOf(graph, acteur1);
-    Set<String> voisins2 = Graphs.neighborSetOf(graph, acteur2);
-
+    Set<String> union = new HashSet<>();
     
-    voisins1.retainAll(voisins2);
-
-    return voisins1;
+    if (!graph.containsVertex(acteur1)) {
+        return union;
+    } else if (!graph.containsVertex(acteur2)) {
+        return union;
+    } else {
+        union.addAll(Graphs.neighborListOf(graph, acteur1));
+        union.addAll(Graphs.neighborListOf(graph, acteur2));
+        return union;
+    }
 }
+
+
 
     
     
