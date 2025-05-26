@@ -182,6 +182,48 @@ public class Main {
     return distanceM;
     }
 
+    //bonus 2
+
+    public static Graph<String, DefaultEdge> collaborateursProchesBonus(Map<String, Set<String>> G, String u, int k) {
+    if (!G.containsKey(u)) {
+        System.out.println(u + " est un illustre inconnu");
+        return null;
+    }
+
+    Set<String> collaborateurs = new HashSet<>();
+    collaborateurs.add(u);
+
+    for (int i = 1; i <= k; i++) {
+        Set<String> collaborateursDirects = new HashSet<>();
+
+        for (String c : collaborateurs) {
+            Set<String> voisins = G.getOrDefault(c, new HashSet<>());
+
+            for (String v : voisins) {
+                if (!collaborateurs.contains(v)) {
+                    collaborateursDirects.add(v);
+                }
+            }
+        }
+
+        collaborateurs.addAll(collaborateursDirects);
+    }
+
+    Graph<String, DefaultEdge> sg = new SimpleGraph<>(DefaultEdge.class);
+    for (String collab : collaborateurs) {
+        for (String collab2 : collaborateurs) {
+            if (!collab.equals(collab2)) {
+                sg.addVertex(collab);
+                sg.addVertex(collab2);
+                sg.addEdge(collab, collab2);
+            }
+        }
+    }
+
+    return sg;
+}
+
+
 
 
             
