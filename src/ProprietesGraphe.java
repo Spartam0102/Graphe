@@ -375,26 +375,57 @@ public class ProprietesGraphe {
             return 0;
         } else {
 
-            double res=somme / nbsommet;
+            double res = somme / nbsommet;
             return res;
         }
     }
 
-public static String distanceMoyennePlusPetite(Graph<String, DefaultEdge> graph) {
-    Double min = null;
-    String sommet=null;
+    public static String distanceMoyennePlusPetite(Graph<String, DefaultEdge> graph) {
+        Double min = null;
+        String sommet = null;
 
+        for (String v : graph.vertexSet()) {
+            double actuel = distanceMoyenne(graph, v);
+            if (min == null || actuel < min) {
+                min = actuel;
+                sommet = v;
+            }
+        }
 
-    for (String v : graph.vertexSet()) {
-        double actuel = distanceMoyenne(graph, v);
-        if (min == null || actuel < min) {
-            min = actuel;
-            sommet=v;
+        return sommet;
+    }
+
+    public static double distanceMoyenneBonus1(Graph<String, DefaultEdge> graph, String u, Set<String> groupeActeur) {
+        double somme = 0;
+        int nbsommet = 0;
+        for (String v : groupeActeur) {
+            if (!v.equals(u)) {
+                somme += distance(graph, u, v);
+                nbsommet++;
+            }
+        }
+        if (somme == 0) {
+            return 0;
+        } else {
+
+            double res = somme / nbsommet;
+            return res;
         }
     }
 
-    return sommet;
-}
+    public static String distanceMoyennePlusPetiteBonus1(Graph<String, DefaultEdge> graph, Set<String> groupeActeur) {
+        Double min = null;
+        String sommet = null;
 
+        for (String v : graph.vertexSet()) {
+            double actuel = distanceMoyenneBonus1(graph, v, groupeActeur);
+            if (min == null || actuel < min) {
+                min = actuel;
+                sommet = v;
+            }
+        }
+
+        return sommet;
+    }
 
 }
