@@ -74,11 +74,6 @@ public class Main {
 }
 
 
-
-    
-    
-    // 3.3 Collaborateurs proches  
-
     // 3.3 Collaborateurs proches
 
 public static Set<String> collaborateursProches(Graph<String, DefaultEdge> graph, String u, int k) {
