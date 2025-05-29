@@ -79,33 +79,34 @@ public class Main {
     
     // 3.3 Collaborateurs proches  
 
-    public static Set<String> collaborateursProches(Map<String, Set<String>> G, String u, int k) {
-        if (!G.containsKey(u)) {
-            System.out.println(u + " est un illustre inconnu");
-            return null;
-        }
+    // 3.3 Collaborateurs proches
 
-        Set<String> collaborateurs = new HashSet<>();
-        collaborateurs.add(u);
+public static Set<String> collaborateursProches(Graph<String, DefaultEdge> graph, String u, int k) {
+    Set<String> collaborateurs = new HashSet<>();
 
-        for (int i = 1; i <= k; i++) {
-            Set<String> collaborateursDirects = new HashSet<>();
+    if (!graph.containsVertex(u)) {
+        System.out.println(u + " est un illustre inconnu");
+        return null;
+    }
 
-            for (String c : collaborateurs) {
-                Set<String> voisins = G.getOrDefault(c, new HashSet<>());
+    collaborateurs.add(u);
 
-                for (String v : voisins) {
-                    if (!collaborateurs.contains(v)) {
-                        collaborateursDirects.add(v);
-                    }
+    for (int i = 1; i <= k; i++) {
+        Set<String> collaborateurs_directs = new HashSet<>();
+        for (String c : collaborateurs) {
+            Set<String> voisins = Graphs.neighborSetOf(graph, c);
+            for (String v : voisins) {
+                if (!collaborateurs.contains(v)) {
+                    collaborateurs_directs.add(v);
                 }
             }
-
-            collaborateurs.addAll(collaborateursDirects);
         }
-
-        return collaborateurs;
+        collaborateurs.addAll(collaborateurs_directs);
     }
+
+    return collaborateurs;
+}
+
 
     // 3.4 Qui est au centre d'Hollywood ? 
     
@@ -273,43 +274,6 @@ public class Main {
 }
 
 
-
-
-            
-        
-    
-        
-    
-
-    //Paul je comprends pas ???? 
-
-    // 3.3
-
-    // public static Set<String> distanceK(Graph<String, DefaultEdge> graph, String u, int k) {
-    //     Set<String> collaborateurs = new HashSet<>();
-
-    //     if (!graph.containsVertex(u)) {
-    //         System.out.println(u + " est un illustre inconnu");
-    //         return null;
-    //     }
-
-    //     collaborateurs.add(u);
-
-    //     for (int i = 1; i <= k; i++) {
-    //         Set<String> collaborateurs_directs = new HashSet<>();
-    //         for (String c : collaborateurs) {
-    //             Set<String> voisins = Graphs.neighborSetOf(graph, c);
-    //             for (String v : voisins) {
-    //                 if (!collaborateurs.contains(v)) {
-    //                     collaborateurs_directs.add(v);
-    //                 }
-    //             }
-    //         }
-    //         collaborateurs.addAll(collaborateurs_directs);
-    //     }
-
-    //     return collaborateurs;
-    // }
 
     // 3.3 modification
     // public static int chercherDistanceK(Graph<String, DefaultEdge> graph, String u, String v) {
