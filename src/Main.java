@@ -182,7 +182,56 @@ public class Main {
     return distanceM;
     }
 
-    //bonus 2
+//bonus 1
+
+    public static String trouverCentreGroupe(Graph<String, DefaultEdge> graph, Set<String> grp) {
+    if (grp == null||grp.isEmpty()) return null;
+
+    String centre = null;
+    int meilleureDist = Integer.MAX_VALUE;
+
+    for (String acteur : graph.vertexSet()) {
+        Set<String> visites = new HashSet<>();
+        List<String> file = new ArrayList<>();
+        Map<String, Integer> distances = new HashMap<>();
+        file.add(acteur);
+        visites.add(acteur);
+        distances.put(acteur, 0);
+        int index = 0;
+
+        while (index < file.size()) {
+            String courant = file.get(index++);
+            int dist = distances.get(courant);
+
+            for (String voisin : Graphs.neighborSetOf(graph, courant)) {
+                if (!visites.contains(voisin)) {
+                    visites.add(voisin);
+                    file.add(voisin);
+                    distances.put(voisin, dist + 1);
+                }
+            }
+        }
+        int maxDist = 0;
+        for (String acteurDuGroupe : grp) {
+            if (!distances.containsKey(acteurDuGroupe)) {
+                maxDist = Integer.MAX_VALUE;
+                break;
+            }
+            int distActeur = distances.get(acteurDuGroupe);
+            if (distActeur > maxDist) {
+                maxDist = distActeur;
+            }
+        }
+        if (maxDist < meilleureDist) {
+            meilleureDist = maxDist;
+            centre = acteur;
+        }
+    }
+    return centre;
+}    
+
+	
+//bonus 2
 
     public static Graph<String, DefaultEdge> collaborateursProchesBonus(Map<String, Set<String>> G, String u, int k) {
     if (!G.containsKey(u)) {
