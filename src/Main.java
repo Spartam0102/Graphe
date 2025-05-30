@@ -50,7 +50,13 @@ public class Main {
     
     
     // Exporter  
-    
+   
+public static void exporter(Graph<String, DefaultEdge> G)throws IOException{
+        DOTExporter<String, DefaultEdge> exporter = new DOTExporter<String, DefaultEdge>();
+		exporter.setVertexAttributeProvider((x) -> Map.of("label", new DefaultAttribute<>(x, AttributeType.STRING)));
+		exporter.exportGraph(G, new FileWriter("graph.dot"));
+    }
+
 
     // 3.2 Collaborateurs en communs  
     
