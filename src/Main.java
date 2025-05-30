@@ -26,34 +26,6 @@ public class Main {
     public static Graph<String, DefaultEdge> importer() throws Exception {
         Gson gson = new Gson();
         Graph<String, DefaultEdge> g = new SimpleGraph<>(DefaultEdge.class);
-
-        FileReader f = new FileReader(FICHIER_SOURCE);
-        BufferedReader b = new BufferedReader(f);
-
-        String ligne = b.readLine();
-
-        while (ligne != null) {
-            GrapheJson donnees = gson.fromJson(ligne, GrapheJson.class);
-            for (String acteur : donnees.cast){
-                g.addVertex(acteur);
-            }
-            for (String acteur : donnees.cast) {
-                for (String acteur2 : donnees.cast) {
-                    if (!(acteur.equals(acteur2)))
-                        g.addEdge(acteur, acteur2);
-                }
-            }
-            ligne = b.readLine();
-        }
-        f.close();
-        return g;
-    }
-    
-    
-    // Exporter  
-    public static Graph<String, DefaultEdge> importer() throws Exception {
-        Gson gson = new Gson();
-        Graph<String, DefaultEdge> g = new SimpleGraph<>(DefaultEdge.class);
         FileReader f = new FileReader(FICHIER_SOURCE);
         BufferedReader b = new BufferedReader(f);
         String ligne = b.readLine();
@@ -75,6 +47,10 @@ public class Main {
         f.close();
         return g;
     }
+    
+    
+    // Exporter  
+    
 
     // 3.2 Collaborateurs en communs  
     
