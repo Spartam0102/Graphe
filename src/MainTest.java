@@ -133,6 +133,24 @@ public class MainTest {
         assertNotNull(graph);
         assertTrue(graph.vertexSet().size() > 0);
         assertTrue(graph.edgeSet().size() > 0);
+
+        int distMax = Main.distanceMax(graph);
+        assertTrue(distMax <= 6);
+
+        double distMoy1 = Main.distanceMoy(graph, "[[Al Pacino]]");
+        double distMoy2 = Main.distanceMoy(graph, "[[John Randolph (actor)|John Randolph]]");
+        double distMoy3 = Main.distanceMoy(graph, "[[Robert Redford]]");
+        double distMoy4 = Main.distanceMoy(graph, "[[George Clooney]]");
+
+        System.out.println(distMoy1);
+        System.out.println(distMoy2);
+        System.out.println(distMoy3);
+        System.out.println(distMoy4);
+
+        System.out.println(Main.chercherPlusDistanceK(graph, "[[Al Pacino]]"));
+        System.out.println(Main.chercherPlusDistanceK(graph, "[[John Randolph (actor)|John Randolph]]"));
+        System.out.println(Main.chercherPlusDistanceK(graph, "[[Robert Redford]]"));
+        System.out.println(Main.chercherPlusDistanceK(graph, "[[George Clooney]]"));
     }
 
     @Test
