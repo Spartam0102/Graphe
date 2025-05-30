@@ -197,6 +197,54 @@ public static Set<String> collaborateursProches(Graph<String, DefaultEdge> graph
     return distanceM;
     }
 
+// 3.5 2
+
+    public static double distanceMoy(Graph<String, DefaultEdge> graph, String acteur) {
+        Map<String, Integer> distances = new HashMap<>();
+        Set<String> visites = new HashSet<>();
+        List<String> sommetsAVisiter = new ArrayList<>();
+        sommetsAVisiter.add(acteur);
+        visites.add(acteur);
+        distances.put(acteur, 0);
+        int index = 0;
+
+        while (index < sommetsAVisiter.size()) {
+            String actuel = sommetsAVisiter.get(index++);
+            int dist = distances.get(actuel);
+
+            for (String voisin : Graphs.neighborListOf(graph, actuel)) {
+                if (!visites.contains(voisin)) {
+                    visites.add(voisin);
+                    sommetsAVisiter.add(voisin);
+                    distances.put(voisin, dist + 1);
+                }
+            }
+        }
+        int somme = 0;
+        for (String sommet : graph.vertexSet()) {
+            if (!sommet.equals(acteur)) {
+                somme += distances.get(sommet);
+            }
+        }
+        return (double) somme/(graph.vertexSet().size() - 1);
+    }
+
+
+
+    public static String minimiseVal(Graph<String, DefaultEdge> graph) {
+        String minVal = null;
+        double minMoyenne = Double.MAX_VALUE;
+
+        for (String acteur : graph.vertexSet()) {
+            double moyenne = distanceMoy(graph, acteur);
+            if (moyenne < minMoyenne) {
+                minMoyenne = moyenne;
+                minVal = acteur;
+            }
+        }
+        return minVal;
+    }
+
 //bonus 1
 
     public static String trouverCentreGroupe(Graph<String, DefaultEdge> graph, Set<String> grp) {
