@@ -51,10 +51,29 @@ public class Main {
     
     
     // Exporter  
-    public static void exporter(Graph<String, DefaultEdge> G)throws IOException{
-        DOTExporter<String, DefaultEdge> exporter = new DOTExporter<String, DefaultEdge>();
-		exporter.setVertexAttributeProvider((x) -> Map.of("label", new DefaultAttribute<>(x, AttributeType.STRING)));
-		exporter.exportGraph(G, new FileWriter("graph.dot"));
+    public static Graph<String, DefaultEdge> importer() throws Exception {
+        Gson gson = new Gson();
+        Graph<String, DefaultEdge> g = new SimpleGraph<>(DefaultEdge.class);
+        FileReader f = new FileReader(FICHIER_SOURCE);
+        BufferedReader b = new BufferedReader(f);
+        String ligne = b.readLine();
+
+        while (ligne != null) {
+            GrapheJson donnees = gson.fromJson(ligne, GrapheJson.class);
+            for (String acteur : donnees.cast){
+                g.addVertex(acteur);
+            }
+            for (int i = 0; i < donnees.cast.size(); i++) {
+                for (int j = i + 1; j < donnees.cast.size(); j++) {
+                    String acteur1 = donnees.cast.get(i);
+                    String acteur2 = donnees.cast.get(j);
+                    g.addEdge(acteur1, acteur2);
+                 }
+            }
+            ligne = b.readLine();
+        }
+        f.close();
+        return g;
     }
 
     // 3.2 Collaborateurs en communs  
