@@ -135,4 +135,22 @@ public class MainTest {
         assertTrue(graph.edgeSet().size() > 0);
     }
 
+    @Test
+    public void testDIstanceMoy(){
+        Graph<String, DefaultEdge> g = new SimpleGraph<>(DefaultEdge.class);
+        g.addVertex("A");
+        g.addVertex("B");
+        g.addVertex("C");
+        g.addVertex("D");
+        g.addEdge("A", "B");
+        g.addEdge("B", "C");
+        g.addEdge("C", "D");
+
+        System.out.println(Main.distanceMoy(g, "A"));
+        System.out.println(Main.distanceMoy(g, "B"));
+        System.out.println(Main.distanceMoy(g, "C"));
+        System.out.println(Main.distanceMoy(g, "D"));
+        System.out.println(Main.minimiseVal(g));
+    }
+
 }
