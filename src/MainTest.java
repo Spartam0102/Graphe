@@ -125,4 +125,14 @@ public class MainTest {
        
         assertTrue(Set.of("b", "c").contains(centre));
     }
+    
+    @Test
+    public void testImporter() throws Exception {
+        Graph<String, DefaultEdge> graph = Main.importer();
+
+        assertNotNull(graph);
+        assertTrue(graph.vertexSet().size() > 0);
+        assertTrue(graph.edgeSet().size() > 0);
+    }
+
 }
