@@ -121,6 +121,32 @@ public static Set<String> collaborateursProches(Graph<String, DefaultEdge> graph
     return collaborateurs;
 }
 
+// 3.3 modification
+public static int chercherDistanceK(Graph<String, DefaultEdge> graph, String u, String v) {
+
+    if (!graph.containsVertex(u) || !graph.containsVertex(v)) {
+        System.out.println(u + " est un illustre inconnu");
+        return -1;
+    }
+    if (u.equals(v)) {
+        return 0;
+    }
+
+    int distance = 1;
+    Set<String> passer = new HashSet<>();
+    Set<String> tout = new HashSet<>();
+    tout = graph.vertexSet();
+    passer.add(u);
+
+    while (passer.size() < tout.size() && !passer.contains(v)) {
+        passer = distanceK(graph, u, distance);
+        distance++;
+    }
+
+    return distance - 1;
+}
+
+
 
     // 3.4 Qui est au centre d'Hollywood ? 
     
@@ -337,32 +363,7 @@ public static Set<String> collaborateursProches(Graph<String, DefaultEdge> graph
 
 
 
-    // 3.3 modification
-    // public static int chercherDistanceK(Graph<String, DefaultEdge> graph, String u, String v) {
-
-    //     if (!graph.containsVertex(u) || !graph.containsVertex(v)) {
-    //         System.out.println(u + " est un illustre inconnu");
-    //         return -1;
-    //     }
-    //     if (u.equals(v)) {
-    //         return 0;
-    //     }
-    //     int distance=1;
-    //     Set<String> passer = new HashSet<>();
-    //     Set<String> tout=new HashSet<>();
-    //     tout=graph.vertexSet();
-    //     passer.add(u);
-    //     while (passer.size()<tout.size() && !passer.contains(v)) {
-    //         passer=distanceK(graph, u, distance);
-    //         distance++;
-
-            
-    //     }
-    //     return distance-1;
-
-
-
-    // }
+    
 
 
     public static void main(String args[]) throws Exception {
