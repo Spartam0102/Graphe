@@ -100,7 +100,7 @@ public class Main {
         return collaborateurs;
     }
 
-    // 3.3 modification
+    // 3.3 recherche distance
     public static int chercherDistanceK(Graph<String, DefaultEdge> graph, String u, String v) {
 
         if (!graph.containsVertex(u) || !graph.containsVertex(v)) {
@@ -124,6 +124,45 @@ public class Main {
 
         return distance - 1;
     }
+
+
+    // 3.3 recherche distance optimiser
+public static int distance(Graph<String, DefaultEdge> graph, String u, String v) {
+    if (!graph.containsVertex(u) || !graph.containsVertex(v)) {
+        System.out.println("Un des sommets est inconnu dans le graphe");
+        return -1;
+    }
+
+    Set<String> dejaVus = new HashSet<>();
+    List<String> niveauActuel = new ArrayList<>();
+    niveauActuel.add(u);
+    dejaVus.add(u);
+
+    int distance = 0;
+
+    while (!niveauActuel.isEmpty()) {
+        List<String> niveauSuivant = new ArrayList<>();
+
+        for (String sommet : niveauActuel) {
+            if (sommet.equals(v)) {
+                return distance;
+            }
+
+            for (String voisin : Graphs.neighborListOf(graph, sommet)) {
+                if (!dejaVus.contains(voisin)) {
+                    dejaVus.add(voisin);
+                    niveauSuivant.add(voisin);
+                }
+            }
+        }
+
+        niveauActuel = niveauSuivant;
+        distance++;
+    }
+
+    return -1;
+}
+
 
     // 3.4 Qui est au centre d'Hollywood ?
 
