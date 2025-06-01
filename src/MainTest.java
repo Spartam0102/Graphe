@@ -2,6 +2,8 @@ import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.SimpleGraph;
 import org.junit.Test;
+import static org.junit.Assert.assertNotNull;
+
 
 import java.util.*;
 
@@ -170,5 +172,31 @@ public class MainTest {
         System.out.println(Main.distanceMoy(g, "D"));
         System.out.println(Main.minimiseVal(g));
     }
+
+    @Test
+    public void testDistance() {
+    Graph<String, DefaultEdge> graph = new SimpleGraph<>(DefaultEdge.class);
+    graph.addVertex("1");
+    graph.addVertex("2");
+    graph.addVertex("3");
+
+    graph.addEdge("1", "2");
+    graph.addEdge("2", "3");
+
+    assertEquals(2, Main.distance(graph, "1", "3"));
+    assertEquals(0, Main.distance(graph, "1", "1"));
+    assertEquals(-1, Main.distance(graph, "1", "X")); // sommet inconnu
+}
+    @Test
+    public void testCollaborateursProchesSommetInexistant() {
+    Graph<String, DefaultEdge> graph = new SimpleGraph<>(DefaultEdge.class);
+    graph.addVertex("a");
+
+    Set<String> result = Main.collaborateursProches(graph, "x", 2);
+
+    assertEquals(null, result);
+}
+
+
 
 }
